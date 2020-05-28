@@ -181,7 +181,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Friendlyname(self.device)
+		return self.mtp.LIBMTP_Get_Friendlyname(self.device).decode()
 
 	def set_devicename(self, name):
 		"""
@@ -197,7 +197,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		ret = self.mtp.LIBMTP_Set_Friendlyname(self.device, name)
+		ret = self.mtp.LIBMTP_Set_Friendlyname(self.device, name.encode())
 		if (ret != 0):
 			self.debug_stack()
 			raise CommandFailed
@@ -213,7 +213,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Serialnumber(self.device)
+		return self.mtp.LIBMTP_Get_Serialnumber(self.device).decode()
 
 	def get_manufacturer(self):
 		"""
@@ -225,7 +225,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Manufacturername(self.device)
+		return self.mtp.LIBMTP_Get_Manufacturername(self.device).decode()
 
 	def get_batterylevel(self):
 		"""
@@ -263,7 +263,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Modelname(self.device)
+		return self.mtp.LIBMTP_Get_Modelname(self.device).decode()
 
 	def get_deviceversion(self):
 		"""
@@ -278,7 +278,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Deviceversion(self.device)
+		return self.mtp.LIBMTP_Get_Deviceversion(self.device).decode()
 
 	def get_filelisting(self, callback=None):
 		"""
@@ -324,7 +324,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		return self.mtp.LIBMTP_Get_Filetype_Description(filetype)
+		return self.mtp.LIBMTP_Get_Filetype_Description(filetype).decode()
 
 	def get_file_metadata(self, file_id):
 		"""
@@ -343,7 +343,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		ret = self.mtp.LIBMTP_Get_Filemetadata(self.device, file_id)
+		ret = self.mtp.LIBMTP_Get_Filemetadata(self.device, file_id).decode()
 
 		if (not hasattr(ret, 'contents')):
 			raise ObjectNotFound
@@ -424,7 +424,7 @@ class MTP:
 		if (callback != None):
 			callback = Progressfunc(callback)
 
-		ret = self.mtp.LIBMTP_Get_File_To_File(self.device, file_id, target, callback, None)
+		ret = self.mtp.LIBMTP_Get_File_To_File(self.device, file_id, target.encode(), callback, None)
 
 		if (ret != 0):
 			self.debug_stack()
@@ -451,7 +451,7 @@ class MTP:
 		if (callback != None):
 			callback = Progressfunc(callback)
 
-		ret = self.mtp.LIBMTP_Get_Track_To_File(self.device, track_id, target, callback, None)
+		ret = self.mtp.LIBMTP_Get_Track_To_File(self.device, track_id, target.encode(), callback, None)
 
 		if (ret != 0):
 			self.debug_stack()
@@ -569,11 +569,11 @@ class MTP:
 		if (callback != None):
 			callback = Progressfunc(callback)
 
-		metadata = LIBMTP_File(filename=target, \
+		metadata = LIBMTP_File(filename=target.encode(), \
 		  filetype=self.find_filetype(source), \
 		  filesize=os.stat(source).st_size)
 
-		ret = self.mtp.LIBMTP_Send_File_From_File(self.device, source, \
+		ret = self.mtp.LIBMTP_Send_File_From_File(self.device, source.encode(), \
 		  ctypes.pointer(metadata), callback, None, parent)
 
 		if (ret != 0):
@@ -613,12 +613,12 @@ class MTP:
 		if callback:
 			callback = Progressfunc(callback)
 
-		metadata.filename = target
+		metadata.filename = target.encode()
 		metadata.parent_id = parent
 		metadata.filetype = self.find_filetype(source)
 		metadata.filesize = os.stat(source).st_size
 
-		ret = self.mtp.LIBMTP_Send_Track_From_File(self.device, source, \
+		ret = self.mtp.LIBMTP_Send_Track_From_File(self.device, source.encode(), \
 		  ctypes.pointer(metadata), callback, None, parent)
 
 		if (ret != 0):
@@ -905,7 +905,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		ret = self.mtp.LIBMTP_Create_Folder(self.device, name, parent)
+		ret = self.mtp.LIBMTP_Create_Folder(self.device, name.encode(), parent)
 
 		if (ret == 0):
 			self.debug_stack()
