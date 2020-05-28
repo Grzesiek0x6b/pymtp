@@ -132,7 +132,7 @@ class MTP:
 			@return: None
 		"""
 
-		if __DEBUG__:
+		if __debug__:
 			self.mtp.LIBMTP_Dump_Errorstack()
 			#self.mtp.LIBMTP_Clear_Errorstack()
 
@@ -889,7 +889,7 @@ class MTP:
 
 		return ret
 
-	def create_folder(self, name, parent=0):
+	def create_folder(self, name, parent=0, storage=0):
 		"""
 			This creates a new folder in the parent. If the parent
 			is 0, it will go in the main directory.
@@ -905,7 +905,7 @@ class MTP:
 		if (self.device == None):
 			raise NotConnected
 
-		ret = self.mtp.LIBMTP_Create_Folder(self.device, name.encode(), parent)
+		ret = self.mtp.LIBMTP_Create_Folder(self.device, name.encode(), parent, storage)
 
 		if (ret == 0):
 			self.debug_stack()
