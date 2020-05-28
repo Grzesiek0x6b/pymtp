@@ -11,9 +11,9 @@ import os
 import ctypes
 import ctypes.util
 
-from models import *
-from constants import *
-from errors import *
+from .models import *
+from .constants import *
+from .errors import *
 
 _module_path = ctypes.util.find_library("mtp")
 _libmtp = ctypes.CDLL(_module_path)
